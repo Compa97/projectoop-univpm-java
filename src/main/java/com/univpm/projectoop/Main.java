@@ -18,6 +18,8 @@ public class Main {
 			System.out.println("Error");
 			e.printStackTrace();
 		}
+		CSVParser parser = new CSVParser();
+		CSVParser.parse();
 		//SpringApplication.run(Main.class, args);
 	}
 }

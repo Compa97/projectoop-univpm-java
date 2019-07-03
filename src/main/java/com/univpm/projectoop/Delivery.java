@@ -3,6 +3,8 @@ package com.univpm.projectoop;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.univpm.projectoop.CSVParser.COMMA_DELIMITER;
+
 public class Delivery {
     //FREQ; UNIT; INDIC_PS; GEO\TIME_PERIOD,2012 ,2013 ,2014 ,2015 ,2016 ,2017
     private String freq;
@@ -36,7 +38,7 @@ public class Delivery {
         this.indic_PS = indic_PS;
         this.geo = geo;
         String[] period = new String [4];
-        period = TimePeriod.split(",");
+        period = TimePeriod.split(COMMA_DELIMITER);
         Pattern number = Pattern.compile("\\d+\\.\\d+\\s");
         Matcher m;
 

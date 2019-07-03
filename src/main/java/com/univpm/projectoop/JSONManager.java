@@ -14,7 +14,7 @@ public class JSONManager {
     private JSONObject objI;
     private JSONArray objA;
 
-    private JSONManager(String data) {
+    public JSONManager(String data) {
         try {
             obj = (JSONObject) JSONValue.parseWithException(data);
             objI = (JSONObject) (obj.get("result"));
