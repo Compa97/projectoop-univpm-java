@@ -1,4 +1,4 @@
-package com.univpm.projectoop;
+package com.univpm.projectoop.utilities;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,20 +8,24 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.io.BufferedReader;
 
-public class Connect {
+public class
+Connect {
     private String url = "http://data.europa.eu/euodp/data/api/3/action/package_show?id=TXJLP91qYJyBYbBF4uug";
     private String data;
     private String line="";
 
     public String getData() {
+
         return data;
     }
 
     public String getUrl() {
+
         return url;
     }
 
     public Connect() {
+
         data = "";
     }
 
@@ -36,7 +40,6 @@ public class Connect {
                 BufferedReader buf = new BufferedReader(inR);
                 while ((line = buf.readLine()) != null) {
                     data += line;
-                    System.out.println(line);
                 }
             }
 

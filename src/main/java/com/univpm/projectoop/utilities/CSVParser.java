@@ -1,4 +1,6 @@
-package com.univpm.projectoop;
+package com.univpm.projectoop.utilities;
+
+import com.univpm.projectoop.model.Delivery;
 
 import java.io.*;
 import java.util.*;
@@ -6,19 +8,22 @@ import java.util.*;
 public class CSVParser {
     public final static String SEMICOLON_DELIMITER = ";";
     public final static String COMMA_DELIMITER = ",";
-
+    private static ArrayList<Delivery> list= new ArrayList<>();
     public CSVParser(){
     }
 
-    public static void parse() {
-        List<List<String>> records = new ArrayList<>();
-        Vector<Delivery> v = new Vector<Delivery>();
+    public static ArrayList<Delivery> getList() {
+        return list;
+    }
+
+    public void parse() {
+
+        //Vector<Delivery> v = new Vector<Delivery>();
         try (BufferedReader br = new BufferedReader(new FileReader("to_parse.csv"))) {
             String line = br.readLine();
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(SEMICOLON_DELIMITER);
-                records.add(Arrays.asList(values));
-                v.add(new Delivery(values[0], values[1],values[2],values[3].split(COMMA_DELIMITER)[0],values[3]));
+                list.add(new Delivery(values[0], values[1],values[2],values[3].split(COMMA_DELIMITER)[0],values[3]));
             }
         }catch (FileNotFoundException e){
             System.out.println("File not found");

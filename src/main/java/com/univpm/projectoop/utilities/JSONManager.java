@@ -1,4 +1,4 @@
-package com.univpm.projectoop;
+package com.univpm.projectoop.utilities;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.file.FileAlreadyExistsException;
@@ -31,7 +31,6 @@ public class JSONManager {
                 JSONObject o1 = (JSONObject) o;
                 String format = (String) o1.get("format");
                 String urlD = (String) o1.get("url");
-
                 if (format.charAt(format.length()-3)=='C'&& format.charAt(format.length()-2)=='S' && format.charAt(format.length()-1)=='V') {
                   try {
                       download(urlD, "to_parse.csv");
