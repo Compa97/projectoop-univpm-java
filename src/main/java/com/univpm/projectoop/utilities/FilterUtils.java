@@ -3,11 +3,9 @@ package com.univpm.projectoop.utilities;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 
 public class FilterUtils<T> {
-
     public static boolean check(Object value, String operator, Object th) {
         if (th instanceof Number && value instanceof Number) {
             Double thC = ((Number) th).doubleValue();
@@ -22,6 +20,7 @@ public class FilterUtils<T> {
             return value.equals(th);
         return false;
     }
+
 
     public Collection<T> select(Collection<T> src, String fieldName, String operator, Object value) {
         Collection<T> out = new ArrayList<T>();

@@ -5,7 +5,9 @@ import com.univpm.projectoop.utilities.FilterUtils;
 
 import javax.validation.constraints.Null;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 public class Deliveries implements Filter<Delivery, Object> {
     private  ArrayList<Delivery> deliveriesList;
@@ -111,6 +113,8 @@ public class Deliveries implements Filter<Delivery, Object> {
         }
         return count;
     }
+
+
 
     @Override
     public ArrayList<Delivery> filterField(String fieldName, String operator, Object value) {

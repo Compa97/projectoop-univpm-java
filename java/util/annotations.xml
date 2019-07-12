@@ -1,0 +1,5 @@
+<root>
+    <item name='java.util.Formatter.Conversion'>
+        <annotation name='java.lang.Deprecated'/>
+    </item>
+</root>
