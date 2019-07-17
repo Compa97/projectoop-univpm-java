@@ -103,7 +103,7 @@ public class FilterUtils<T> {
 
                 case 0:
 
-                    if (Pattern.matches("[+-]?([0-9]*[.])?[0-9]+", value[0].toString())) {
+                    if (Pattern.matches("([0-9]*[.])?[0-9]+", value[0].toString())) {
                         try {
                             Float number = parseFloat(value[0].toString());
                             if (FilterUtils.check(tmp, operator, number))
@@ -112,7 +112,7 @@ public class FilterUtils<T> {
                             e.printStackTrace();
                         }
                     } else {
-                        if (Pattern.matches("[a-zA-Z]+", value[0].toString())) {
+                        if (Pattern.matches("[\"]?[a-zA-Z]+[0-9]*[\"]?", value[0].toString())) {
                             String text = String.valueOf(value[0]);
                             if (FilterUtils.check(tmp, operator, text))
                                 out.add(item);
@@ -147,7 +147,7 @@ public class FilterUtils<T> {
             String copy = strValue.substring(1, strValue.length()-1);
             splittedValues = copy.split(",");
 
-            if(Pattern.matches("([0-9]+[.])?[0-9]+", splittedValues[0].toString())) {
+            if(Pattern.matches("([0-9]*[.])?[0-9]+", splittedValues[0].toString())) {
 
                 Float [] valueFloatloc = new Float[splittedValues.length];
                 try {
@@ -160,7 +160,7 @@ public class FilterUtils<T> {
                     e.printStackTrace();
                 }
 
-            } else if (Pattern.matches("[\"]?[a-zA-Z]+[\"]?", splittedValues[0].toString())) {
+            } else if (Pattern.matches("[\"]?[a-zA-Z]+[0-9]*[\"]?", splittedValues[0].toString())) {
 
                 String [] valueStringloc = new String[splittedValues.length];
                 try {
@@ -172,8 +172,7 @@ public class FilterUtils<T> {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-            } else flag = 0;
-        }
+            }
+        } else flag = 0;
     }
 }

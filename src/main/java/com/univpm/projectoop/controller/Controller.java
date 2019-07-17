@@ -164,7 +164,6 @@ public class Controller {
         //ITERAZIONE SU userRequest (oggetto esterno con and e or)
         for (int i = 0; i < getKeys.length(); i++) {
 
-            //TODO: funzione per gestire l'assenza di and oppure or esterni
             operator = getKeys.getString(i);
 
             if (operator.equals("$or") || operator.equals("$and")) {
