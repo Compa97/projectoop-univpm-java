@@ -43,33 +43,13 @@ public class Delivery {
                     this.perTime_Period[i - 1] = Float.parseFloat(period[i]);
                 }
                 else {
+                    //if there is some text appending to numeric data
                     this.perTime_Period[i - 1] = Float.parseFloat(period[i].split(" ")[0]);
                 }
             }
-            else switch (control_unv) {
-                case ": ":
-                    //not available
-                    this.perTime_Period[i - 1] = null;
-                    break;
-                case ": b":
-                    //break in time series
-                    this.perTime_Period[i - 1] = null;
-                    break;
-                case ": c":
-                    //confidential
-                    this.perTime_Period[i - 1] = null;
-                    break;
-                case ": d":
-                    //definition differs
-                    this.perTime_Period[i - 1] = null;
-                    break;
-                case ": z":
-                    //not applicable
-                    this.perTime_Period[i - 1] = null;
-                    break;
-                default:
-                    this.perTime_Period[i - 1] = null;
-                    break;
+            else if (control_unv.contains(":")) {
+                //if is: B (break in time series), C (confidential), D (definition differs), Z (not applicable)
+                this.perTime_Period[i - 1] = null;
             }
         }
     }
@@ -87,52 +67,20 @@ public class Delivery {
                 "geo='" + geo + '\'' + ", \n" +
                 "perTime_Period=" + "[";
         int year = 2012;
-        StringBuilder periods =new StringBuilder("") ;
+        StringBuilder periods = new StringBuilder("") ;
 
         for (int i = 0; i < 6; i++){
-            periods.append(year+i + ": " + perTime_Period[i] + ", ");
+            periods.append(year + i + ": " + perTime_Period[i] + ", ");
         }
 
         return out + periods + ']' + "\n" + '}';
     }
 
-
-
     public Float getYearPerc(int year){
-        year-=2012;
+        year -= 2012;
         return this.perTime_Period[year];
     }
 
-    //non necessario
-   /* public float avg (){
-
-        float total = 0;
-        for (int i = 0; i < this.perTime_Period.length; i++){
-
-            total += this.perTime_Period[i];
-        }
-        return total/this.perTime_Period.length;
-    }
-
-    public float max (float[] perTime_Period){
-
-        Arrays.sort(perTime_Period);
-        return perTime_Period[perTime_Period.length-1];
-    }
-
-    public float min (float[] perTime_Period){
-
-        Arrays.sort(perTime_Period);
-        float min = 0;
-        int i = 0;
-        while (!(min > 0) && i < perTime_Period.length){
-            min = perTime_Period[i];
-            i++;
-        }
-
-        return min;
-    }
-*/
     public String getFreq() {
         return freq;
     }
@@ -173,4 +121,3 @@ public class Delivery {
         this.perTime_Period = perTime_Period;
     }
 }
-
