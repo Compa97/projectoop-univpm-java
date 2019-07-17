@@ -8,7 +8,7 @@ import java.util.*;
 public class CSVParser {
     public final static String SEMICOLON_DELIMITER = ";";
     public final static String COMMA_DELIMITER = ",";
-    private static ArrayList<Delivery> list= new ArrayList<>();
+    private static final ArrayList<Delivery> list= new ArrayList<>();
     public CSVParser(){
     }
 
@@ -18,7 +18,6 @@ public class CSVParser {
 
     public void parse() {
 
-        //Vector<Delivery> v = new Vector<Delivery>();
         try (BufferedReader br = new BufferedReader(new FileReader("to_parse.csv"))) {
             String line = br.readLine();
             while ((line = br.readLine()) != null) {
@@ -30,9 +29,7 @@ public class CSVParser {
             e.printStackTrace();
         } catch (IOException i) {
             i.printStackTrace();
-            return;
         }
-
     }
 
 }

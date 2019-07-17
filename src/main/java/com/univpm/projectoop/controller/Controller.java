@@ -21,11 +21,13 @@ import java.util.ArrayList;
 
 import static com.univpm.projectoop.Main.deliveries;
 
+//throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"invalid date format");
+
 @RestController
 public class Controller {
 
-    private Deliveries source = deliveries;
-    private ArrayList <ArrayList<Delivery>> internalList = new ArrayList<>();
+    private final Deliveries source = deliveries;
+    private final ArrayList <ArrayList<Delivery>> internalList = new ArrayList<>();
 
     @RequestMapping(value = "/meta", method = RequestMethod.GET, produces = "application/json")
     String getMetadata() {
@@ -41,7 +43,7 @@ public class Controller {
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET, produces = "application/json")
-    String getList() throws IOException, JSONException, ParseException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    String getList() throws IOException {
 
         ArrayList<Delivery> filtered = null;
         ObjectMapper map = new ObjectMapper();
@@ -153,13 +155,13 @@ public class Controller {
         }
     }
 
-    private ArrayList<Delivery> manageFilter (JSONObject userRequest, String listConnector) throws ParseException, JSONException, IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    private ArrayList<Delivery> manageFilter (JSONObject userRequest, String listConnector) throws JSONException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 
         ArrayList <ArrayList<Delivery>> filtered = new ArrayList<>();
 
         JSONObject element;
         JSONArray parameters, getIkeys, getKeys = userRequest.names();
-        String operator = null;
+        String operator;
 
         //ITERAZIONE SU userRequest (oggetto esterno con and e or)
         for (int i = 0; i < getKeys.length(); i++) {
@@ -169,7 +171,7 @@ public class Controller {
             if (operator.equals("$or") || operator.equals("$and")) {
 
                 try {
-                    parameters = (JSONArray) userRequest.getJSONArray(operator);
+                    parameters = userRequest.getJSONArray(operator);
 
                     if (parameters != null) {
 

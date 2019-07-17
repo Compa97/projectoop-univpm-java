@@ -10,14 +10,12 @@ import net.minidev.json.JSONValue;
 import net.minidev.json.parser.ParseException;
 
 public class JSONManager {
-    private JSONObject obj ;
-    private JSONObject objI;
     private JSONArray objA;
 
     public JSONManager(String data) {
         try {
-            obj = (JSONObject) JSONValue.parseWithException(data);
-            objI = (JSONObject) (obj.get("result"));
+            JSONObject obj = (JSONObject) JSONValue.parseWithException(data);
+            JSONObject objI = (JSONObject) (obj.get("result"));
             objA = (JSONArray) (objI.get("resources"));
         } catch (ParseException e) {
             System.out.println("Error during parsing");

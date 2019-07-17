@@ -3,7 +3,6 @@ package com.univpm.projectoop.model;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -67,10 +66,10 @@ public class Delivery {
                 "geo='" + geo + '\'' + ", \n" +
                 "perTime_Period=" + "[";
         int year = 2012;
-        StringBuilder periods = new StringBuilder("") ;
+        StringBuilder periods = new StringBuilder() ;
 
         for (int i = 0; i < 6; i++){
-            periods.append(year + i + ": " + perTime_Period[i] + ", ");
+            periods.append(year).append(i).append(": ").append(perTime_Period[i]).append(", ");
         }
 
         return out + periods + ']' + "\n" + '}';

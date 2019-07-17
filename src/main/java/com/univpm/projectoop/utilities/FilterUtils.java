@@ -14,11 +14,10 @@ import static java.lang.Float.parseFloat;
 public class FilterUtils<T> {
 
     private int flag, yearCondition;
-    private Object [] splittedValues;
     private Float [] valueFloat;
     private String [] valueString;
 
-    public static boolean check(Object value, String operator, Object... obj) {
+    private static boolean check(Object value, String operator, Object... obj) {
 
         if (value != null) {
 
@@ -30,8 +29,7 @@ public class FilterUtils<T> {
                 if (operator.equals("$eq")) {
                     Float prova = Float.valueOf(String.valueOf(valueF));
                     Float prova1 = Float.valueOf(String.valueOf(objF));
-                    boolean b = prova.equals(prova1);
-                    return b;
+                    return prova.equals(prova1);
                 } else if (operator.equals("$not"))
                     return !value.equals(obj[0]);
                 else if (operator.equals("$gt"))
@@ -46,7 +44,7 @@ public class FilterUtils<T> {
             } else if (obj.length == 1 && obj[0] instanceof String && value instanceof String) {
 
                 if (operator.equals("$eq") || operator.equals("$in"))
-                    return ((String) value).equals((String) obj[0]);
+                    return value.equals(obj[0]);
                 else if (operator.equals("$not") || operator.equals("$nin")) return !value.equals(obj[0]);
 
             } else if (obj.length > 1) {
@@ -59,13 +57,11 @@ public class FilterUtils<T> {
                         return valueF >= min && valueF <= max;
                     }
                 } else if (operator.equals("$in")){
-                    boolean b = Arrays.asList(obj).contains(value);
-                    return b;
+                    return Arrays.asList(obj).contains(value);
                 }
 
                 else if (operator.equals("$nin")) {
-                    boolean b = !Arrays.asList(obj).contains(value);
-                    return b;
+                    return !Arrays.asList(obj).contains(value);
                 }
             }
         }
@@ -145,7 +141,7 @@ public class FilterUtils<T> {
 
         if (strValue.contains("[")){
             String copy = strValue.substring(1, strValue.length()-1);
-            splittedValues = copy.split(",");
+            Object[] splittedValues = copy.split(",");
 
             if(Pattern.matches("([0-9]*[.])?[0-9]+", splittedValues[0].toString())) {
 
@@ -165,7 +161,7 @@ public class FilterUtils<T> {
                 String [] valueStringloc = new String[splittedValues.length];
                 try {
                     for (int i = 0; i < splittedValues.length; i++) {
-                        valueStringloc[i] = splittedValues[i].toString().substring(1,splittedValues[i].toString().length()-1);
+                        valueStringloc[i] = splittedValues[i].toString().substring(1, splittedValues[i].toString().length()-1);
                     }
                     valueString = valueStringloc;
                     flag = 2;

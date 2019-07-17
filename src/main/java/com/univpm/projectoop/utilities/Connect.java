@@ -10,9 +10,8 @@ import java.io.BufferedReader;
 
 public class
 Connect {
-    private String url = "http://data.europa.eu/euodp/data/api/3/action/package_show?id=TXJLP91qYJyBYbBF4uug";
+    private final String url = "http://data.europa.eu/euodp/data/api/3/action/package_show?id=TXJLP91qYJyBYbBF4uug";
     private String data;
-    private String line="";
 
     public String getData() {
 
@@ -38,8 +37,9 @@ Connect {
             try (InputStream in = openConnection.getInputStream()) {
                 inR = new InputStreamReader(in);
                 BufferedReader buf = new BufferedReader(inR);
+                String line = "";
                 while ((line = buf.readLine()) != null) {
-                    data += line;
+                    data = data.concat(line);
                 }
             }
 

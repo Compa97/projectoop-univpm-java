@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class Deliveries implements Filter<Delivery, Object> {
     private ArrayList<Delivery> deliveriesList;
-    private FilterUtils<Delivery> utils;
+    private final FilterUtils<Delivery> utils;
 
     public Deliveries(ArrayList<Delivery> deliveriesList, FilterUtils<Delivery> utils) {
         super();
@@ -21,7 +21,7 @@ public class Deliveries implements Filter<Delivery, Object> {
     public Deliveries(ArrayList<Delivery> deliveriesList) {
         super();
         this.deliveriesList = deliveriesList;
-        this.utils = new FilterUtils<Delivery>();
+        this.utils = new FilterUtils<>();
     }
 
     public ArrayList<Delivery> getDeliveriesList() {
@@ -99,7 +99,7 @@ public class Deliveries implements Filter<Delivery, Object> {
         switch (att) {
             case "geo" :
                 for (Delivery d : deliveriesList) {
-                    if(d.getGeo() == value) count ++;
+                    if(d.getGeo().equals(value)) count ++;
                 }
                 break;
             case "code":

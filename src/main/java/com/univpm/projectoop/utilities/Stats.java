@@ -9,7 +9,7 @@ public class Stats{
     private float max;
     private float min;
     private float devStd;
-    private int count;
+    private final int count;
 
     //statistiche sull'intero dataset
     public Stats(int year){
