@@ -25,7 +25,7 @@ public class Main {
 		}
 		CSVParser p = new CSVParser();
 		p.parse();
-		deliveries = new Deliveries(CSVParser.getList()) ;
+		deliveries = new Deliveries(CSVParser.getList());
 		SpringApplication.run(Main.class, args);
 	}
 }
