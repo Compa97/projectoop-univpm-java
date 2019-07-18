@@ -11,6 +11,7 @@ public class Stats{
     private float devStd;
     private final int count;
 
+    //TODO: ma sto count che ce famo?
     //statistiche sull'intero dataset
     public Stats(int year){
         avg = deliveries.getMeanOfYear(year);

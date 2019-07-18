@@ -1,27 +1,26 @@
 package com.univpm.projectoop.controller;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchemaGenerator;
 import com.univpm.projectoop.model.Deliveries;
 import com.univpm.projectoop.model.Delivery;
 import com.univpm.projectoop.utilities.Stats;
-import net.minidev.json.parser.ParseException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.boot.json.JsonParseException;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import static com.univpm.projectoop.Main.deliveries;
-
-//throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"invalid date format");
 
 @RestController
 public class Controller {
@@ -30,40 +29,33 @@ public class Controller {
     private final ArrayList <ArrayList<Delivery>> internalList = new ArrayList<>();
 
     @RequestMapping(value = "/meta", method = RequestMethod.GET, produces = "application/json")
-    String getMetadata() {
-        try {
-            ObjectMapper map = new ObjectMapper();
-            JsonSchemaGenerator schemaGenerator = new JsonSchemaGenerator(map);
-            JsonSchema deliverySchema = schemaGenerator.generateSchema(Delivery.class);
-            return map.writeValueAsString(deliverySchema);
-        } catch (JsonProcessingException e1) {
-            e1.printStackTrace();
-            return ("Errore");
-        }
+    String getMetadata() throws JsonProcessingException {
+
+        ObjectMapper map = new ObjectMapper();
+        JsonSchemaGenerator schemaGenerator = new JsonSchemaGenerator(map);
+        JsonSchema deliverySchema = schemaGenerator.generateSchema(Delivery.class);
+        return map.writeValueAsString(deliverySchema);
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET, produces = "application/json")
-    String getList() throws IOException {
+    String getList() throws JsonProcessingException {
 
-        ArrayList<Delivery> filtered = null;
         ObjectMapper map = new ObjectMapper();
-
         return map.writeValueAsString(deliveries.getDeliveriesList());
     }
 
-    @RequestMapping(value = "/list", method = RequestMethod.POST, produces = "application/json")
-    String getList(@RequestParam (required = false, defaultValue = "or") String listConnector, @RequestBody(required = false) String filter) throws IOException, JSONException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    @RequestMapping(value = {"/list", "/list/{listConnector}"}, method = RequestMethod.POST, produces = "application/json")
+    String getList(@PathVariable Optional<String> listConnector, @RequestBody(required = false) String filter) throws IOException, JSONException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 
         ArrayList<Delivery> filtered = null;
         ObjectMapper map = new ObjectMapper();
 
         if (filter != null) {
-
             JSONObject obj = new JSONObject(filter);
             filtered = manageFilter(obj, listConnector);
 
-            if (filtered == null){
-                return "There is no result for your filtering query!";
+            if (filtered.isEmpty()){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "There is no result for your filtering query!");
             }
             return map.writeValueAsString(filtered);
         } else {
@@ -76,8 +68,6 @@ public class Controller {
         ArrayList<Stats> allStat = new ArrayList<>();
         ObjectMapper map = new ObjectMapper();
 
-        map.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
-        map.enable(SerializationFeature.INDENT_OUTPUT);
         for (int i = 2012; i <= 2017; i++) {
             allStat.add(new Stats(i));
         }
@@ -85,14 +75,13 @@ public class Controller {
     }
 
     @RequestMapping(value = "/stats/{year}", method = RequestMethod.GET, produces = "application/json")
-    public String getStat(@PathVariable("year") String year) throws IOException {
-        Integer yearP;
+    public String getStat(@PathVariable("year") String year) throws JsonProcessingException {
+        int yearP;
 
         try{
             yearP = Integer.parseInt(year);
-        } catch (Exception e){
-            e.printStackTrace();
-            return "Formato anno non corretto!";
+        } catch (NumberFormatException e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This is not an year!");
         }
 
         if (yearP >= 2012 && yearP <= 2017) {
@@ -100,23 +89,24 @@ public class Controller {
             Stats statistic = new Stats(yearP);
             return map.writeValueAsString(statistic);
         } else {
-            return "Anno non valido!";
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This year isn't in dataset.");
         }
     }
 
-    @RequestMapping(value = "/stats", method = RequestMethod.POST, produces = "application/json")
-    public String getStat(@RequestParam(required = false) String year, @RequestParam (required = false, defaultValue = "or") String listConnector, @RequestBody(required = false) String filter) throws JSONException, IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    @RequestMapping(value = {"/stats", "/stats/{year}", "/stats/{year}/{listConnector}"}, method = RequestMethod.POST, produces = "application/json")
+    public String getStat(@PathVariable Optional <String> year, @PathVariable Optional<String> listConnector, @RequestBody(required = false) String filter) throws JSONException, IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 
         ArrayList<Delivery> out = null;
         ArrayList<Stats> allStat = new ArrayList<>();
         ObjectMapper map = new ObjectMapper();
         Stats statistic;
-        Integer yearP;
+        int yearP;
 
-        if (year != null) {
+        //TODO: due operatori uguali
+        if (year.isPresent()) {
 
             try{
-                yearP = Integer.parseInt(year);
+                yearP = Integer.parseInt(year.get());
             } catch (Exception e){
                 e.printStackTrace();
                 return "Formato anno non corretto!";
@@ -155,7 +145,7 @@ public class Controller {
         }
     }
 
-    private ArrayList<Delivery> manageFilter (JSONObject userRequest, String listConnector) throws JSONException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    private ArrayList<Delivery> manageFilter (JSONObject userRequest, Optional<String> listConnector) throws JSONException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 
         ArrayList <ArrayList<Delivery>> filtered = new ArrayList<>();
 
@@ -186,16 +176,14 @@ public class Controller {
                         }
 
                         if (operator.equals("$or")) {
-                            //orList = source.or(internalList);
                             filtered.add(source.or(internalList));
-                        } else if (operator.equals("$and")) {
-                            //andList = source.and(internalList);
+                        } else {
                             filtered.add(source.and(internalList));
                         }
                     }
                     internalList.clear();
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                } catch (JsonParseException e) {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "JSON malformed!");
                 }
             } else {
 
@@ -205,16 +193,23 @@ public class Controller {
                     internalList.clear();
                     fetchFieldObject(userRequest.names(), userRequest);
                     return source.or(internalList);
+                } else {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong field in your JSON request!");
                 }
             }
-
         }
 
-        if (listConnector.equals("and")){
-            return source.and(filtered);
+        if (listConnector.isPresent()) {
+            if (listConnector.get().equalsIgnoreCase("and")) {
+                return source.and(filtered);
+            } else if (listConnector.get().equalsIgnoreCase("or")) {
+                return source.or(filtered);
+            } else {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The listConnector can be only AND or OR!");
+            }
+        } else {
+            return source.or(filtered);
         }
-
-        return source.or(filtered);
     }
 
     private void fetchFieldObject (JSONArray getIkeys, JSONObject element) throws JSONException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
