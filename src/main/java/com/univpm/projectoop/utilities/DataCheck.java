@@ -15,12 +15,13 @@ public class DataCheck {
 
     public boolean isYear (String fieldName){
 
-        boolean isYear;
+        boolean isYear = false;
         try{
             yearCondition = Integer.parseInt(fieldName);
             isYear = true;
         } catch (NumberFormatException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Year is not valid.");
+            e.getMessage();
+            isYear = false;
         }
         return isYear;
     }

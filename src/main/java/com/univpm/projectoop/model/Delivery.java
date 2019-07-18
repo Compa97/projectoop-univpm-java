@@ -7,6 +7,9 @@ import java.util.regex.Pattern;
 
 import static com.univpm.projectoop.utilities.CSVParser.COMMA_DELIMITER;
 
+/**
+ * DataSet Eurostat: percentage of letters delivered on-time
+ */
 public class Delivery {
     //FREQ; UNIT; INDIC_PS; GEO\TIME_PERIOD,2012 ,2013 ,2014 ,2015 ,2016 ,2017
 
@@ -15,22 +18,42 @@ public class Delivery {
      */
     @JsonPropertyDescription("Frequenza campione (A = Annuale)")
     private String freq;
+
+    /**
+     *
+     */
     @JsonPropertyDescription("Inserire descrizione")
     private String unit;
 
     /**
      * Codici tipo di spedizione:
-     * -QOS801: indica una spedizione in D+1 giorni lavorativi (spedizione nazionale)
-     * -QOS803: indica una spedizione in D+3 giorni lavorativi (spedizione internazionale)
-     * -QOS804: indica una spedizione in D+5 giorni lavorativi (spedizione internazionale)
+     * -QOS801: indica una spedizione nazionale in 1 giorno lavorativo (dal deposito alla consegna)
+     * -QOS803: indica una spedizione internazionale in (massimo) 3 giorni lavorativi (dal deposito alla consegna)
+     * -QOS804: indica una spedizione internazionale in (massimo) 5 giorni lavorativi (dal deposito alla consegna)
      */
-    @JsonPropertyDescription("Codice tipo di spedizione (QOS801=...., QOS801 = ....., QOS801 = ....)")
+    @JsonPropertyDescription("Codice tipo di spedizione (QOS801= nazionale - 1 giorno; QOS803 = internazionale - 3 giorni; QOS801 = internazionale - 5 giorni)")
     private String indic_PS;
+
+    /**
+     *
+     */
     @JsonPropertyDescription("Nazione considerata")
     private String geo;
-    @JsonPropertyDescription("Percentuale lettere consegnate ogni anno")
-    private Float[] perTime_Period;   //usare una hashmap?
 
+    /**
+     *
+     */
+    @JsonPropertyDescription("Percentuale lettere consegnate ogni anno")
+    private Float[] perTime_Period;
+
+    /**
+     *
+     * @param freq
+     * @param unit
+     * @param indic_PS
+     * @param geo
+     * @param TimePeriod
+     */
     public Delivery(String freq, String unit, String indic_PS, String geo, String TimePeriod) {
         this.freq = freq;
         this.unit = unit;
