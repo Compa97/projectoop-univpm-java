@@ -1,5 +1,8 @@
 package com.univpm.projectoop.utilities;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.regex.Pattern;
 
 import static java.lang.Float.parseFloat;
@@ -16,9 +19,8 @@ public class DataCheck {
         try{
             yearCondition = Integer.parseInt(fieldName);
             isYear = true;
-        } catch (Exception e){
-            //e.printStackTrace();
-            isYear = false;
+        } catch (NumberFormatException e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Year is not valid.");
         }
         return isYear;
     }

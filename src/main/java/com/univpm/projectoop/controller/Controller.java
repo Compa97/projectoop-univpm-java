@@ -172,7 +172,6 @@ public class Controller {
             }
             else {
 
-
                 if (fields.contains(operator)){
                     internalList.clear();
                     fetchFieldObject(userRequest.names(), userRequest);
