@@ -52,7 +52,7 @@ public class Controller {
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.POST, produces = "application/json")
-    String getList(@RequestParam (required = false, defaultValue = "or") String listConnector, @RequestBody(required = false) String filter) throws IOException, JSONException, ParseException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    String getList(@RequestParam (required = false, defaultValue = "or") String listConnector, @RequestBody(required = false) String filter) throws IOException, JSONException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 
         ArrayList<Delivery> filtered = null;
         ObjectMapper map = new ObjectMapper();
@@ -105,7 +105,7 @@ public class Controller {
     }
 
     @RequestMapping(value = "/stats", method = RequestMethod.POST, produces = "application/json")
-    public String getStat(@RequestParam(required = false) String year, @RequestParam (required = false, defaultValue = "or") String listConnector, @RequestBody(required = false) String filter) throws JSONException, ParseException, IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    public String getStat(@RequestParam(required = false) String year, @RequestParam (required = false, defaultValue = "or") String listConnector, @RequestBody(required = false) String filter) throws JSONException, IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 
         ArrayList<Delivery> out = null;
         ArrayList<Stats> allStat = new ArrayList<>();

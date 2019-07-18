@@ -48,10 +48,15 @@ public class FilterUtils<T> {
 
                 switch (operator) {
                     case "$bt":
-                        //TODO: CONTROLLO VALORI INVERTITI
                         if (obj.length == 2 && obj[0] instanceof Number && obj[1] instanceof Number) {
+
                             Float min = ((Number) obj[0]).floatValue();
                             Float max = ((Number) obj[1]).floatValue();
+                            if (min > max){
+                                Float tmp = max;
+                                max = min;
+                                min = tmp;
+                            }
                             Float valueF = ((Number) value).floatValue();
                             return valueF >= min && valueF <= max;
                         }

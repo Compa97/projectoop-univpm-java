@@ -12,12 +12,6 @@ public class Deliveries implements Filter<Delivery, Object> {
     private ArrayList<Delivery> deliveriesList;
     private final FilterUtils<Delivery> utils;
 
-    public Deliveries(ArrayList<Delivery> deliveriesList, FilterUtils<Delivery> utils) {
-        super();
-        this.deliveriesList = deliveriesList;
-        this.utils = utils;
-    }
-
     public Deliveries(ArrayList<Delivery> deliveriesList) {
         super();
         this.deliveriesList = deliveriesList;

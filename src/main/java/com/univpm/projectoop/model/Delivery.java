@@ -53,9 +53,6 @@ public class Delivery {
         }
     }
 
-    public Delivery(ArrayList<Delivery> list) {
-    }
-
     @Override
     public String toString() {
 
