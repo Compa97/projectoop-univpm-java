@@ -8,24 +8,52 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Collection model: classe che definisce l'oggetto lista di Delivery
+ */
 public class Deliveries implements Filter<Delivery, Object> {
+
+    /**
+     *
+     */
     private ArrayList<Delivery> deliveriesList;
+
+    /**
+     *
+     */
     private final FilterUtils<Delivery> utils;
 
+    /**
+     *
+     * @param deliveriesList
+     */
     public Deliveries(ArrayList<Delivery> deliveriesList) {
         super();
         this.deliveriesList = deliveriesList;
         this.utils = new FilterUtils<>();
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<Delivery> getDeliveriesList() {
         return deliveriesList;
     }
 
+    /**
+     *
+     * @param deliveriesList
+     */
     public void setDeliveriesList(ArrayList<Delivery> deliveriesList) {
         this.deliveriesList = deliveriesList;
     }
 
+    /**
+     *
+     * @param year
+     * @return
+     */
     public float getMeanOfYear(int year) {
         float mean = 0;
         int counter = 0;
@@ -40,6 +68,11 @@ public class Deliveries implements Filter<Delivery, Object> {
         return (mean / (deliveriesList.size() - counter));
     }
 
+    /**
+     *
+     * @param year
+     * @return
+     */
     public float devStd (int year) {
         int counter = 0;
         float mean = getMeanOfYear(year);
@@ -56,6 +89,11 @@ public class Deliveries implements Filter<Delivery, Object> {
         return (float) Math.sqrt(qsum/(deliveriesList.size() - counter));
     }
 
+    /**
+     *
+     * @param year
+     * @return
+     */
     public float maxOfaYear(int year){
         int i = 0;
         while (deliveriesList.get(i).getYearPerc(year) == null){
@@ -72,6 +110,11 @@ public class Deliveries implements Filter<Delivery, Object> {
         return max;
     }
 
+    /**
+     *
+     * @param year
+     * @return
+     */
     public float minOfaYear(int year){
         int i = 0;
         while (deliveriesList.get(i).getYearPerc(year) == null){
@@ -88,25 +131,11 @@ public class Deliveries implements Filter<Delivery, Object> {
         return min;
     }
 
-    /*
-    public int countFiltered (String att, String value) {
-        int count = 0;
-        switch (att) {
-            case "geo" :
-                for (Delivery d : deliveriesList) {
-                    if(d.getGeo().equals(value)) count ++;
-                }
-                break;
-            case "code":
-                for (Delivery d : deliveriesList) {
-                    if(d.getIndic_PS().equals(value)) count++;
-                }
-                break;
-        }
-        return count;
-    }
-    */
-
+    /**
+     *
+     * @param objs
+     * @return
+     */
     public ArrayList<Delivery> and (ArrayList<ArrayList<Delivery>> objs) {
         ArrayList<Delivery> list = new ArrayList<>();
         for(int i = 0; i < objs.size(); i++) {
@@ -125,6 +154,11 @@ public class Deliveries implements Filter<Delivery, Object> {
         return list;
     }
 
+    /**
+     *
+     * @param objs
+     * @return
+     */
     public ArrayList<Delivery> or (ArrayList<ArrayList<Delivery>> objs) {
         Set<Delivery> s = new HashSet<>();
         for (ArrayList<Delivery> elem : objs)
@@ -132,6 +166,16 @@ public class Deliveries implements Filter<Delivery, Object> {
         return new ArrayList<>(s);
     }
 
+    /**
+     *
+     * @param fieldName
+     * @param operator
+     * @param value
+     * @return
+     * @throws NoSuchMethodException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     */
     @Override
     public ArrayList<Delivery> filterField(String fieldName, String operator, Object... value) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         return (ArrayList<Delivery>) utils.select(this.getDeliveriesList(), fieldName, operator, value);

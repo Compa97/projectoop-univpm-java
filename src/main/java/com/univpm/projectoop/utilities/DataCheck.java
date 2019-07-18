@@ -7,12 +7,31 @@ import java.util.regex.Pattern;
 
 import static java.lang.Float.parseFloat;
 
+/**
+ *
+ */
 public class DataCheck {
 
+    /**
+     *
+     */
     private int yearCondition;
+
+    /**
+     *
+     */
     private Float [] valueFloat;
+
+    /**
+     *
+     */
     private String [] valueString;
 
+    /**
+     *
+     * @param fieldName
+     * @return
+     */
     public boolean isYear (String fieldName){
 
         boolean isYear = false;
@@ -26,6 +45,11 @@ public class DataCheck {
         return isYear;
     }
 
+    /**
+     *
+     * @param strValue
+     * @return
+     */
     public boolean isArray (String strValue) {
 
         Object[] splittedValues;
@@ -74,14 +98,26 @@ public class DataCheck {
         return false;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getYearCondition() {
         return yearCondition;
     }
 
+    /**
+     *
+     * @return
+     */
     public Float[] getValueFloat() {
         return valueFloat;
     }
 
+    /**
+     *
+     * @return
+     */
     public String[] getValueString() {
         return valueString;
     }

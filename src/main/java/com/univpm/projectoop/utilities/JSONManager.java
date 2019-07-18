@@ -9,9 +9,20 @@ import net.minidev.json.JSONObject;
 import net.minidev.json.JSONValue;
 import net.minidev.json.parser.ParseException;
 
+/**
+ *
+ */
 public class JSONManager {
+
+    /**
+     *
+     */
     private JSONArray objA;
 
+    /**
+     *
+     * @param data
+     */
     public JSONManager(String data) {
         try {
             JSONObject obj = (JSONObject) JSONValue.parseWithException(data);
@@ -23,6 +34,9 @@ public class JSONManager {
         }
     }
 
+    /**
+     *
+     */
     public  void createCSV(){
         for (Object o : objA) {
             if (o instanceof JSONObject) {
@@ -41,6 +55,12 @@ public class JSONManager {
         }
     }
 
+    /**
+     *
+     * @param url
+     * @param fileName
+     * @throws Exception
+     */
     private void download(String url, String fileName) throws Exception {
         try (InputStream in = URI.create(url).toURL().openStream()) {
             try {

@@ -7,12 +7,21 @@ import com.univpm.projectoop.utilities.JSONManager;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-
-
+/**
+ *
+ */
 @SpringBootApplication
 public class Main {
 
+	/**
+	 *
+	 */
 	public static Deliveries deliveries;
+
+	/**
+	 *
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		try {
 			Connect connection = new Connect();

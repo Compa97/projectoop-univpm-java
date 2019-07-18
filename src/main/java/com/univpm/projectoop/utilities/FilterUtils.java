@@ -8,8 +8,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
+/**
+ *
+ * @param <T>
+ */
 public class FilterUtils<T> {
 
+    /**
+     *
+     * @param value
+     * @param operator
+     * @param obj
+     * @return
+     */
     private static boolean check(Object value, String operator, Object... obj) {
 
         if (value != null) {
@@ -72,6 +83,17 @@ public class FilterUtils<T> {
         return false;
     }
 
+    /**
+     *
+     * @param src
+     * @param fieldName
+     * @param operator
+     * @param value
+     * @return
+     * @throws NoSuchMethodException
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     */
     public Collection<Delivery> select(Collection<Delivery> src, String fieldName, String operator, Object... value) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Collection<Delivery> out = new ArrayList<>();
         Method m;

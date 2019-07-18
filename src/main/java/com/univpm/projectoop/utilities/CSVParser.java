@@ -5,17 +5,42 @@ import com.univpm.projectoop.model.Delivery;
 import java.io.*;
 import java.util.*;
 
+/**
+ *
+ */
 public class CSVParser {
+
+    /**
+     *
+     */
     public final static String SEMICOLON_DELIMITER = ";";
+
+    /**
+     *
+     */
     public final static String COMMA_DELIMITER = ",";
+
+    /**
+     *
+     */
     private static final ArrayList<Delivery> list= new ArrayList<>();
+
+    /*
     public CSVParser(){
     }
+    */
 
+    /**
+     *
+     * @return
+     */
     public static ArrayList<Delivery> getList() {
         return list;
     }
 
+    /**
+     *
+     */
     public void parse() {
 
         try (BufferedReader br = new BufferedReader(new FileReader("to_parse.csv"))) {

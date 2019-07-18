@@ -1,5 +1,8 @@
 package com.univpm.projectoop.utilities;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -8,26 +11,38 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.io.BufferedReader;
 
-public class
-Connect {
-    private final String url = "http://data.europa.eu/euodp/data/api/3/action/package_show?id=TXJLP91qYJyBYbBF4uug";
+/**
+ *
+ */
+public class Connect {
+
+    /**
+     *
+     */
+    private final static String url = "http://data.europa.eu/euodp/data/api/3/action/package_show?id=TXJLP91qYJyBYbBF4uug";
+
+    /**
+     *
+     */
     private String data;
 
     public String getData() {
-
         return data;
     }
 
     public String getUrl() {
-
         return url;
     }
 
+    /*
     public Connect() {
-
         data = "";
     }
+    */
 
+    /**
+     *
+     */
     public void startConnect() {
 
         try {
@@ -44,9 +59,12 @@ Connect {
             }
 
         } catch (MalformedURLException e) {
-            System.out.println("Unable to parse the URL correctly ");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Unable to parse the URL correctly.");
+
         } catch (IOException e) {
-            System.out.println("IOexception");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "I/O Exception.");
+
+
         }
     }
 }

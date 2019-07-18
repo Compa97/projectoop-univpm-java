@@ -28,16 +28,35 @@ import static com.univpm.projectoop.Main.deliveries;
 @RestController
 public class Controller {
 
+    /**
+     *
+     */
     private final Deliveries source = deliveries;
+
+    /**
+     *
+     */
     private final ArrayList <ArrayList<Delivery>> internalList = new ArrayList<>();
+
+    /**
+     *
+     */
     private final String fields = "freq " + "unit " + "indic_PS " + "geo " + "2012 " + "2013 " + "2014 " + "2015 " + "2016 " + "2017 ";
+
+    /**
+     *
+     */
     private ArrayList<Delivery> out = null;
+
+    /**
+     *
+     */
     private ObjectMapper map;
 
 
     /**
-     * Path che restituisce i metadati (frequenza,
-     * @return
+     * Path che restituisce i metadati (frequenza, unità di misura, codice spedizioni, paese di riferimento, vettore di dati)
+     * @return JSON che elenca le informazioni contenute nel model
      * @throws JsonProcessingException
      */
     @RequestMapping(value = "/meta", method = RequestMethod.GET, produces = "application/json")
@@ -61,6 +80,17 @@ public class Controller {
         return map.writeValueAsString(deliveries.getDeliveriesList());
     }
 
+    /**
+     *
+     * @param listConnector
+     * @param filter
+     * @return
+     * @throws IOException
+     * @throws JSONException
+     * @throws NoSuchMethodException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     */
     @RequestMapping(value = {"/list", "/list/{listConnector}"}, method = RequestMethod.POST, produces = "application/json")
     String getList(@PathVariable Optional<String> listConnector, @RequestBody(required = false) String filter) throws IOException, JSONException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 
@@ -80,6 +110,11 @@ public class Controller {
         }
     }
 
+    /**
+     *
+     * @return
+     * @throws JsonProcessingException
+     */
     @RequestMapping(value = "/stats", method = RequestMethod.GET, produces = "application/json")
     public String getStat() throws JsonProcessingException {
         ArrayList<Stats> allStat = new ArrayList<>(6);
@@ -91,12 +126,30 @@ public class Controller {
         return map.writeValueAsString(allStat);
     }
 
+    /**
+     *
+     * @param year
+     * @return
+     * @throws JsonProcessingException
+     */
     @RequestMapping(value = "/stats/{year}", method = RequestMethod.GET, produces = "application/json")
     public String getStat(@PathVariable("year") String year) throws JsonProcessingException {
         out = null;
         return parseYear(year);
     }
 
+    /**
+     *
+     * @param year
+     * @param listConnector
+     * @param filter
+     * @return
+     * @throws JSONException
+     * @throws IOException
+     * @throws NoSuchMethodException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     */
     @RequestMapping(value = {"/stats", "/stats/{year}", "/stats/{year}/{listConnector}"}, method = RequestMethod.POST, produces = "application/json")
     public String getStat(@PathVariable Optional <String> year, @PathVariable Optional<String> listConnector, @RequestBody(required = false) String filter) throws JSONException, IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 
@@ -141,6 +194,16 @@ public class Controller {
         }
     }
 
+    /**
+     *
+     * @param userRequest
+     * @param listConnector
+     * @return
+     * @throws JSONException
+     * @throws NoSuchMethodException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     */
     private ArrayList<Delivery> manageFilter (JSONObject userRequest, Optional<String> listConnector) throws JSONException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 
         ArrayList <ArrayList<Delivery>> filtered = new ArrayList<>();
@@ -209,6 +272,15 @@ public class Controller {
         }
     }
 
+    /**
+     *
+     * @param getIkeys
+     * @param element
+     * @throws JSONException
+     * @throws NoSuchMethodException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     */
     private void fetchFieldObject (JSONArray getIkeys, JSONObject element) throws JSONException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         for (int k = 0; k < getIkeys.length(); k++) {
 
@@ -224,6 +296,11 @@ public class Controller {
         }
     }
 
+    /**
+     *
+     * @param year
+     * @return
+     */
     private String parseYear (String year){
         try {
             int yearP = Integer.parseInt(year);
