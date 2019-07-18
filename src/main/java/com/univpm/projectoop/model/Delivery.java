@@ -10,10 +10,20 @@ import static com.univpm.projectoop.utilities.CSVParser.COMMA_DELIMITER;
 public class Delivery {
     //FREQ; UNIT; INDIC_PS; GEO\TIME_PERIOD,2012 ,2013 ,2014 ,2015 ,2016 ,2017
 
+    /**
+     *
+     */
     @JsonPropertyDescription("Frequenza campione (A = Annuale)")
     private String freq;
     @JsonPropertyDescription("Inserire descrizione")
     private String unit;
+
+    /**
+     * Codici tipo di spedizione:
+     * -QOS801: indica una spedizione in D+1 giorni lavorativi (spedizione nazionale)
+     * -QOS803: indica una spedizione in D+3 giorni lavorativi (spedizione internazionale)
+     * -QOS804: indica una spedizione in D+5 giorni lavorativi (spedizione internazionale)
+     */
     @JsonPropertyDescription("Codice tipo di spedizione (QOS801=...., QOS801 = ....., QOS801 = ....)")
     private String indic_PS;
     @JsonPropertyDescription("Nazione considerata")

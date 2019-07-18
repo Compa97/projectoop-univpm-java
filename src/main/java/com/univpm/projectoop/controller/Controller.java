@@ -22,6 +22,9 @@ import java.util.Optional;
 
 import static com.univpm.projectoop.Main.deliveries;
 
+/**
+ * Questa classe gestisce le richieste REST
+ */
 @RestController
 public class Controller {
 
@@ -32,6 +35,11 @@ public class Controller {
     private ObjectMapper map;
 
 
+    /**
+     * Path che restituisce i metadati (frequenza,
+     * @return
+     * @throws JsonProcessingException
+     */
     @RequestMapping(value = "/meta", method = RequestMethod.GET, produces = "application/json")
     String getMetadata() throws JsonProcessingException {
 
@@ -41,6 +49,11 @@ public class Controller {
         return map.writeValueAsString(deliverySchema);
     }
 
+    /**
+     *
+     * @return
+     * @throws JsonProcessingException
+     */
     @RequestMapping(value = "/list", method = RequestMethod.GET, produces = "application/json")
     String getList() throws JsonProcessingException {
 
