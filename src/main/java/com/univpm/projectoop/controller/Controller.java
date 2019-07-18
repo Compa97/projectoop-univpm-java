@@ -27,6 +27,10 @@ public class Controller {
 
     private final Deliveries source = deliveries;
     private final ArrayList <ArrayList<Delivery>> internalList = new ArrayList<>();
+    private final String fields = "freq " + "unit " + "indic_PS " + "geo " + "2012 " + "2013 " + "2014 " + "2015 " + "2016 " + "2017 ";
+    private ArrayList<Delivery> out = null;
+    private ObjectMapper map;
+
 
     @RequestMapping(value = "/meta", method = RequestMethod.GET, produces = "application/json")
     String getMetadata() throws JsonProcessingException {
@@ -65,7 +69,7 @@ public class Controller {
 
     @RequestMapping(value = "/stats", method = RequestMethod.GET, produces = "application/json")
     public String getStat() throws JsonProcessingException {
-        ArrayList<Stats> allStat = new ArrayList<>();
+        ArrayList<Stats> allStat = new ArrayList<>(6);
         ObjectMapper map = new ObjectMapper();
 
         for (int i = 2012; i <= 2017; i++) {
@@ -76,72 +80,51 @@ public class Controller {
 
     @RequestMapping(value = "/stats/{year}", method = RequestMethod.GET, produces = "application/json")
     public String getStat(@PathVariable("year") String year) throws JsonProcessingException {
-        int yearP;
-
-        try{
-            yearP = Integer.parseInt(year);
-        } catch (NumberFormatException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This is not an year!");
-        }
-
-        if (yearP >= 2012 && yearP <= 2017) {
-            ObjectMapper map = new ObjectMapper();
-            Stats statistic = new Stats(yearP);
-            return map.writeValueAsString(statistic);
-        } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This year isn't in dataset.");
-        }
+        out = null;
+        return parseYear(year);
     }
 
     @RequestMapping(value = {"/stats", "/stats/{year}", "/stats/{year}/{listConnector}"}, method = RequestMethod.POST, produces = "application/json")
     public String getStat(@PathVariable Optional <String> year, @PathVariable Optional<String> listConnector, @RequestBody(required = false) String filter) throws JSONException, IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 
-        ArrayList<Delivery> out = null;
+        out = null;
         ArrayList<Stats> allStat = new ArrayList<>();
-        ObjectMapper map = new ObjectMapper();
-        Stats statistic;
-        int yearP;
 
-        //TODO: due operatori uguali
-        if (year.isPresent()) {
+        if (filter != null) {
 
-            try{
-                yearP = Integer.parseInt(year.get());
-            } catch (Exception e){
-                e.printStackTrace();
-                return "Formato anno non corretto!";
-            }
+            if (filter.split("or").length <= 2 && filter.split("and").length <= 2) {
 
-            if (yearP >= 2012 && yearP <= 2017) {
-                try {
-                    if (filter != null) {
-                        JSONObject jOb = new JSONObject(filter);
-                        out = manageFilter(jOb, listConnector);
+                JSONObject jOb = new JSONObject(filter);
+                out = manageFilter(jOb, listConnector);
+
+                if (year.isPresent()) {
+                    // 1) FILTER NOT NULL - YEAR NOT NULL
+                    return parseYear (year.get());
+
+                } else {
+                    // 2) FILTER NOT NULL - YEAR NULL
+                    map = new ObjectMapper();
+                    Deliveries d = new Deliveries(out);
+                    for (int i = 2012; i <= 2017; i++) {
+                        allStat.add(new Stats(i, d));
                     }
-                    if (out != null) {
-                        statistic = new Stats(yearP, new Deliveries(out));
-                        return map.writeValueAsString(statistic);
-                    } else {
-                        statistic = new Stats(yearP);
-                        return map.writeValueAsString(statistic);
-                    }
-                } catch (JsonProcessingException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                    e.printStackTrace();
-                    return e.toString();
+                    return map.writeValueAsString(allStat);
+
                 }
             } else {
-                return "Anno non valido!";
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "JSON: you can't use two or more disjunctive or conjunctive forms separated.");
             }
-        } else if (filter != null) {
-            JSONObject jOb = new JSONObject(filter);
-            out = manageFilter(jOb, listConnector);
-            Deliveries d = new Deliveries(out);
-            for (int i = 2012; i <= 2017; i++) {
-                allStat.add(new Stats(i, d));
+        }
+        else {
+
+            if (year.isPresent()) {
+                // 3) FILTER NULL - YEAR NOT NULL
+                out = null;
+                return parseYear (year.get());
+            } else {
+                // 4) FILTER NULL - YEAR NULL
+                return getStat();
             }
-            return map.writeValueAsString(allStat);
-        } else {
-            return getStat();
         }
     }
 
@@ -157,6 +140,7 @@ public class Controller {
         for (int i = 0; i < getKeys.length(); i++) {
 
             operator = getKeys.getString(i);
+            userRequest.keys();
 
             if (operator.equals("$or") || operator.equals("$and")) {
 
@@ -185,9 +169,9 @@ public class Controller {
                 } catch (JsonParseException e) {
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "JSON malformed!");
                 }
-            } else {
+            }
+            else {
 
-                String fields = "freq " + "unit " + "indic_PS " + "geo " + "2012 " + "2013 " + "2014 " + "2015 " + "2016 " + "2017 ";
 
                 if (fields.contains(operator)){
                     internalList.clear();
@@ -207,7 +191,8 @@ public class Controller {
             } else {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The listConnector can be only AND or OR!");
             }
-        } else {
+        }
+        else {
             return source.or(filtered);
         }
     }
@@ -216,11 +201,39 @@ public class Controller {
         for (int k = 0; k < getIkeys.length(); k++) {
 
             String field = getIkeys.getString(k);
+            if (!fields.contains(field)){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong field in your JSON request!");
+            }
             JSONObject condition = element.getJSONObject(field);
             String op = condition.keys().next().toString();
             Object value = condition.getString(condition.keys().next().toString());
 
             internalList.add(source.filterField(field, op, value));
+        }
+    }
+
+    private String parseYear (String year){
+        try {
+            int yearP = Integer.parseInt(year);
+            if (yearP >= 2012 && yearP <= 2017) {
+                try {
+                    map = new ObjectMapper();
+                    Stats statistic = null;
+                    if (out != null) {
+                        statistic = new Stats(yearP, new Deliveries(out));
+                        return map.writeValueAsString(statistic);
+                    } else {
+                        statistic = new Stats(yearP);
+                        return map.writeValueAsString(statistic);
+                    }
+                } catch (JsonProcessingException e) {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error while producing your JSON result.");
+                }
+            } else {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This year isn't in dataset.");
+            }
+        } catch (NumberFormatException e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This is not an year!");
         }
     }
 

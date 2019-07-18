@@ -2,7 +2,6 @@ package com.univpm.projectoop.model;
 
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

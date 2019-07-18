@@ -88,6 +88,7 @@ public class Deliveries implements Filter<Delivery, Object> {
         return min;
     }
 
+    /*
     public int countFiltered (String att, String value) {
         int count = 0;
         switch (att) {
@@ -104,10 +105,7 @@ public class Deliveries implements Filter<Delivery, Object> {
         }
         return count;
     }
-
-    public int count (ArrayList<Delivery> list) {
-        return list.size();
-    }
+    */
 
     public ArrayList<Delivery> and (ArrayList<ArrayList<Delivery>> objs) {
         ArrayList<Delivery> list = new ArrayList<>();

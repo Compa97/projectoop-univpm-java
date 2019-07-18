@@ -9,24 +9,23 @@ public class Stats{
     private float max;
     private float min;
     private float devStd;
-    private final int count;
+    private int count;
 
-    //TODO: ma sto count che ce famo?
     //statistiche sull'intero dataset
     public Stats(int year){
-        avg = deliveries.getMeanOfYear(year);
-        max = deliveries.maxOfaYear(year);
-        min = deliveries.minOfaYear(year);
-        devStd = deliveries.devStd(year);
-        count = deliveries.count(deliveries.getDeliveriesList());
+        this.avg = deliveries.getMeanOfYear(year);
+        this.max = deliveries.maxOfaYear(year);
+        this.min = deliveries.minOfaYear(year);
+        this.devStd = deliveries.devStd(year);
+        this.count = deliveries.getDeliveriesList().size();
     }
     //statistiche su un insieme di oggetti
     public Stats(int year, Deliveries list){
-        avg = list.getMeanOfYear(year);
-        max = list.maxOfaYear(year);
-        min = list.minOfaYear(year);
-        devStd = list.devStd(year);
-        count = list.count(list.getDeliveriesList());
+        this.avg = list.getMeanOfYear(year);
+        this.max = list.maxOfaYear(year);
+        this.min = list.minOfaYear(year);
+        this.devStd = list.devStd(year);
+        this.count = list.getDeliveriesList().size();
     }
 
     public float getAvg() {
@@ -59,5 +58,13 @@ public class Stats{
 
     public void setDevStd(float devStd) {
         this.devStd = devStd;
+    }
+
+    public float getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 }
