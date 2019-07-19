@@ -70,7 +70,7 @@ Restituisce in formato JSON una lista filtrata degli oggetti del dataset secondo
 Se non viene specificato il filtro restituisce l'intero dataset.
 Se il filtro comprende un "*or*" e un "*and*" *listConnector* da la possibilità di imporre una ulteriore condizione logica ("*and*" o "*or*") tra le due liste filtrate. Di default listConnector è "*or*".
 
-* **/stats/**
+* **/stats**
 
 Restituisce in formato JSON le statistiche filtrate.
 
