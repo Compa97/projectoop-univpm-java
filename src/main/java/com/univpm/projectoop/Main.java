@@ -29,7 +29,6 @@ public class Main {
 			JSONManager handler = new JSONManager(connection.getData());
 			handler.createCSV();
 		} catch (NullPointerException e){
-			System.out.println("Error");
 			e.printStackTrace();
 		}
 		CSVParser p = new CSVParser();

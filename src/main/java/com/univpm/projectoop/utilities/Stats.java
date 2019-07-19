@@ -49,7 +49,7 @@ public class Stats{
      * @param year
      * @param list
      */
-    public Stats(int year, Deliveries list){
+    public Stats(int year, Deliveries list) {
         this.avg = list.getMeanOfYear(year);
         this.max = list.maxOfaYear(year);
         this.min = list.minOfaYear(year);

@@ -14,17 +14,17 @@ import java.util.Set;
 public class Deliveries implements Filter<Delivery, Object> {
 
     /**
-     *
+     * Lista degli oggetti Delivery
      */
     private ArrayList<Delivery> deliveriesList;
 
     /**
-     *
+     * Lista utilizzata per filtrare gli oggetti
      */
     private final FilterUtils<Delivery> utils;
 
     /**
-     *
+     * Costruttore che assegna la lista di tutti gli oggetti e quella da filtrare
      * @param deliveriesList
      */
     public Deliveries(ArrayList<Delivery> deliveriesList) {
@@ -34,7 +34,7 @@ public class Deliveries implements Filter<Delivery, Object> {
     }
 
     /**
-     *
+     * Metodo che ritorna la lista di tutti gli oggetti
      * @return
      */
     public ArrayList<Delivery> getDeliveriesList() {
@@ -42,7 +42,7 @@ public class Deliveries implements Filter<Delivery, Object> {
     }
 
     /**
-     *
+     * Metodo che permette di modificare la lista di tutti gli oggetti
      * @param deliveriesList
      */
     public void setDeliveriesList(ArrayList<Delivery> deliveriesList) {
@@ -50,9 +50,9 @@ public class Deliveries implements Filter<Delivery, Object> {
     }
 
     /**
-     *
+     * Metodo per il calcolo della media della percentuale in un determinato anno
      * @param year
-     * @return
+     * @return La media con virgola della percentuale di lettere consegnate nell'anno considerato
      */
     public float getMeanOfYear(int year) {
         float mean = 0;
@@ -171,9 +171,10 @@ public class Deliveries implements Filter<Delivery, Object> {
      * @param fieldName
      * @param operator
      * @param value
-     * @return
-     * @throws NoSuchMethodException
-     * @throws IllegalAccessException
+     * @return Ritorna la lista generata dal metodo select della classe FilterUtils
+     * @throws NoSuchMethodException Lanciato quando un metodo non viene trovato
+     * @throws IllegalAccessException Lanciato quando un'applicazione non ha accesso alla
+     * definizione di una classe, un campo, un metodo o un costruttore
      * @throws InvocationTargetException
      */
     @Override
