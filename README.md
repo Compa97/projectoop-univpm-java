@@ -1,7 +1,7 @@
 # ProgettoOOP
 
 Il seguente file README.md andrà a spiegare le funzionalità dell'applicazione creata.
-In particolare essa è un'applicazione REST, progettata in Java e con l'aiuto di Spring-Boot Framework, che, prendendo in ingresso un *url* su cui si trovano dati in formato *JSON*, scaricherà da esso un file (se non già presente) contente un dataset in formato CSV. Su questo file sarà possibile effettuare operazioni di filtraggio per ottenere i dati richiesti in formato *JSON.
+In particolare essa è un'applicazione REST, progettata in Java e con l'aiuto di Spring-Boot Framework, la quale, preso in ingresso un *URL* su cui si trovano dati in formato *JSON*, scarica un file (se non già presente) contente un dataset in formato CSV. Su questo file sarà possibile effettuare operazioni di filtraggio per ottenere i dati richiesti in formato *JSON.
 
 ## Il dataset
 Il dataset CSV (scaricabile da [questo JSON](http://data.europa.eu/euodp/data/api/3/action/package_show?id=TXJLP91qYJyBYbBF4uug)) è un insieme di dati EUROSTAT riguardanti statistiche sulle percentuali di lettere consegnate in tempo (in base al tipo di spedizione) e suddivise per i vari paesi europei (maggiori dettagli sulle modalità dell'indagine sono reperibili qui: [glossario e note tecniche, PDF](https://publications.europa.eu/portal2012-portlet/html/downloadHandler.jsp?identifier=397a7a23-6d05-11e5-9317-01aa75ed71a1&format=pdf&language=en&productionSystem=cellar&part=)).
@@ -42,31 +42,49 @@ I dati restituiti sono in formato "*JSON*" e rappresentano oggetti filtrati o l'
 È possibile chiedere anche la restituzione delle statistiche di un particolare anno, che riguarderanno la percentuale di lettere consegnate e riporteranno anche il conteggio degli oggetti sui quali è stata calcolata la statistica.
 
 # Path disponibili
-Attraverso una serie di chiamate *GET* a rotte diverse è possibile ottenere vari risultati; le richieste di filtraggio sono state implementate con chiamate *POST* per evitare query string troppo lunghe nell'*url*.
+Attraverso una serie di chiamate *GET* a rotte diverse è possibile ottenere vari risultati; le richieste di filtraggio sono state implementate con chiamate *POST* per evitare query string troppo lunghe nell'*URL*.
 
 Chiamate **GET**:
+
 * **/meta**
+
 Restituisce in formato JSON i metadati dell'oggetto che modella il dataset  ovvero il tipo, il nome e il significato dei sui attributi.
 
 * **/list**
+
 Restituisce in formato JSON l'elenco degli oggetti del dataset.
 
 * **/stats** 
+    
 Restituisce in formato JSON le statistiche sull'intero dataset per tutti gli anni.
 
 * **/stats/{year}**
+
 Restituisce le statistiche sull'intero dataset del solo anno richiesto in formato JSON.
 
 Chiamate *POST*:
 
 * **/list/{listConnector}**
+
 Restituisce in formato JSON una lista filtrata degli oggetti del dataset secondo le richieste del filtro che viene passato nel body, in formato JSON.
 Se non viene specificato il filtro restituisce l'intero dataset.
 Se il filtro comprende un "*or*" e un "*and*" *listConnector* da la possibilità di imporre una ulteriore condizione logica ("*and*" o "*or*") tra le due liste filtrate. Di default listConnector è "*or*".
 
-* **/stats/{year}/{listConnector}**
-Restituisce in formato JSON le statistiche di un anno su una lista filtrata di oggetti, a seconda del filtro passato come JSON nel body della richiesta. Se il filtro comprende un "*or*" e un "*and*" *listConnector* da la possibilità di imporre una ulteriore condizione logica ("*and*" o "*or*") tra le due liste filtrate. Di default listConnector è "*or*".
-Se non viene specificato l'anno, le statistiche vengono calcolate per tutti gli anni del dataset.
+* **/stats/**
+
+Restituisce in formato JSON le statistiche filtrate.
+
+* **/stats/year/{year}**
+
+Restituisce in formato JSON statistiche filtrate di un determinato anno.
+
+* **/stats/listConnector/{listConnector}**
+
+Restituisce statistiche filtrate con più liste interconnesse dal parametro logico AND oppure OR contenuto nella stringa *listConnector*.
+
+* **/stats/year/{year}/listConnector/{listConnector}**
+
+Restituisce in formato JSON le statistiche di un anno su una lista filtrata di oggetti, a seconda del filtro passato come JSON nel body della richiesta. Se il filtro comprende un "*or*" e un "*and*" *listConnector* dà la possibilità di imporre una ulteriore condizione logica ("*and*" o "*or*") tra le due liste filtrate. Di default listConnector è "*or*".
 
 # Filtraggio
 Il filtraggio del dataset avviene con delle chiamate *POST*, in cui all'interno del body viene passato come JSON il filtro richiesto. Il filtro permette di creare una condizione "*or*" tra un insieme di elementi e una condizione "*and*" tra un altro insieme. I risultati di queste due espressioni possono a loro volta essere messi in una condizione di "*and*" o "*or*" a discrezione dell'utente.
@@ -108,24 +126,24 @@ o infine
 ```
 
 Per scelta di sintassi gli tutti operatori vengono preceduti da "$". 
-* **operatorelogico** può corrispondere solo a "\$and" o "\$or" 
-* **operatore**  può corrispondere solo ai seguenti valori:
-      *  "$not" 
-      *  "$in" 
-      *  "$nin" 
-      *  "$eq"
-      *  "$gt"
-      *  "$gte"
-      *  "$lt"
-      *  "$lte"
-      *  "$bt"
+* **operatorelogico** può corrispondere solo a **"\$and"** o **"\$or"**; 
+* **operatore**  può corrispondere solo ai seguenti valori (hanno tutti arietà uguale a 1, tranne dove diversamente indicato):
+  *  **"\$not"**
+  *  **"\$in"** (richiede un vettore di valori di confronto)
+  *  **"\$nin"** (richiede un vettore di valori di confronto)
+  *  **"\$eq"**
+  *  **"\$gt"** (solo numerici)
+  *  **"\$gte"** (solo numerici)
+  *  **"\$lt"** (solo numerici)
+  *  **"\$lte"** (solo numerici)
+  *  **"\$bt"** (solo numerici, richiede un vettore di esattamente **due** valori di confronto)
 * **field** è il campo che deve essere il filtrato, corrisponde quindi ad uno degli attributi di "*Delivery*".
 * **value** è il valore che viene comparato per eseguire il filtro.
 
 # Esempi di funzionamento
 Nel seguente paragrafo vengono mostrati esempi di chiamate ed i relativi risultati.
 
-1.  POST/list
+***1.  POST/list***
 
 body:
  ```
@@ -158,7 +176,7 @@ La risposta in formato JSON è :
     }
 ```
 
-2. POST/list/and
+***2. POST/list/and***
 
 body:
 ```
@@ -173,7 +191,6 @@ body:
 		{"indic_PS":{"$eq" : "QOS801"}}
 		
 	]
-
 }
 ```
 
@@ -211,7 +228,7 @@ La risposta in formato JSON è :
 ]
 ```
 
-3. POST/stats/2012
+***3. POST/stats/year/2012***
 
 body: 
 ```
