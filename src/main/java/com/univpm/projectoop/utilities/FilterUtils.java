@@ -1,6 +1,8 @@
 package com.univpm.projectoop.utilities;
 
 import com.univpm.projectoop.model.Delivery;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -47,35 +49,45 @@ public class FilterUtils<T> {
                         return valueF < objF;
                     case "$lte":
                         return valueF <= objF;
+                    case "$bt":
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Between operator accepts only two values!");
                 }
 
             } else if (obj.length == 1 && obj[0] instanceof String && value instanceof String) {
 
                 if (operator.equals("$eq") || operator.equals("$in"))
                     return value.equals(obj[0]);
-                else if (operator.equals("$not") || operator.equals("$nin")) return !value.equals(obj[0]);
+                else if (operator.equals("$not") || operator.equals("$nin"))
+                    return !value.equals(obj[0]);
+                else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid operator for string.");
 
             } else if (obj.length > 1) {
 
                 switch (operator) {
                     case "$bt":
-                        if (obj.length == 2 && obj[0] instanceof Number && obj[1] instanceof Number) {
+                        if (obj.length == 2) {
+                            if(obj[0] instanceof Number && obj[1] instanceof Number) {
 
-                            Float min = ((Number) obj[0]).floatValue();
-                            Float max = ((Number) obj[1]).floatValue();
-                            if (min > max){
-                                Float tmp = max;
-                                max = min;
-                                min = tmp;
+                                Float min = ((Number) obj[0]).floatValue();
+                                Float max = ((Number) obj[1]).floatValue();
+                                if (min > max) {
+                                    Float tmp = max;
+                                    max = min;
+                                    min = tmp;
+                                }
+                                Float valueF = ((Number) value).floatValue();
+                                return valueF >= min && valueF <= max;
                             }
-                            Float valueF = ((Number) value).floatValue();
-                            return valueF >= min && valueF <= max;
+                        } else {
+                            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Between operator accepts only two values!");
                         }
                         break;
                     case "$in":
                         return Arrays.asList(obj).contains(value);
                     case "$nin":
                         return !Arrays.asList(obj).contains(value);
+                    default:
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid operator for your comparison.");
                 }
             }
         }

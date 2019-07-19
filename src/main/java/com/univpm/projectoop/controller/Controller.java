@@ -45,6 +45,7 @@ public class Controller {
      */
     private final String fields = "freq " + "unit " + "indic_PS " + "geo " + "2012 " + "2013 " + "2014 " + "2015 " + "2016 " + "2017 ";
 
+    private final String operators = "$eq " + "$in " + "$nin " + "$bt " + "$not " + "$gt " + "$gte " + "$lt "+ "$lte ";
     /**
      * Lista che viene restituita in uscita
      */
@@ -102,13 +103,21 @@ public class Controller {
 
         if (filter != null) {
             JSONObject obj = new JSONObject(filter);
+
             filtered = manageFilter(obj, listConnector);
 
-            if (filtered.isEmpty()){
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "There is no result for your filtering query!");
+            if (filtered != null) {
+                if (filtered.isEmpty()) {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "There is no result for your filtering query!");
+                }
+                return map.writeValueAsString(filtered);
+            } else {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Unknown error: list is empty.");
             }
-            return map.writeValueAsString(filtered);
         } else {
+            if (listConnector.isPresent()) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "listConnector path is unnecessary if body request is empty.");
+            }
             return map.writeValueAsString(deliveries.getDeliveriesList());
         }
     }
@@ -189,7 +198,9 @@ public class Controller {
             }
         }
         else {
-
+            if (listConnector.isPresent()) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "listConnector path is unnecessary if body request is empty.");
+            }
             if (year.isPresent()) {
                 // 3) FILTER NULL - YEAR NOT NULL
                 out = null;
@@ -267,6 +278,9 @@ public class Controller {
         }
 
         if (listConnector.isPresent()) {
+            if(!(listConnector.get().equals("and") || listConnector.get().equals("or"))){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "listConnector path is uncorrect!");
+            }
             if (listConnector.get().equalsIgnoreCase("and")) {
                 return source.and(filtered);
             } else if (listConnector.get().equalsIgnoreCase("or")) {
@@ -295,12 +309,18 @@ public class Controller {
         for (int k = 0; k < getIkeys.length(); k++) {
 
             String field = getIkeys.getString(k);
+
             if (!fields.contains(field)){
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong field in your JSON request!");
             }
+
             JSONObject condition = element.getJSONObject(field);
             String op = condition.keys().next().toString();
             Object value = condition.getString(condition.keys().next().toString());
+
+            if (!operators.contains(op)) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong operator in your JSON request!");
+            }
 
             internalList.add(source.filterField(field, op, value));
         }
