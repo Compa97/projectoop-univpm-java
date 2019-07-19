@@ -4,15 +4,14 @@ Il seguente file ReadMe.md andrà a spiegare le funzionalità dell'applicazione 
 In particolare essa è un'applicazione che, prendendo in ingresso un *url* su cui si trovano dati in formato *JSON*, scaricherà da esso un file (se non già presente) contente un dataset in formato CSV, su questo file sarà possibile effettuare operazioni di filtraggio per ottenere i dati richiesti in formato *JSON.
 
 ## Il dataset
-Il dataset CSV è un insieme di righe, in cui ogni riga contiene le percentuale di lettere di una determinata categoria consegnate per tempo in uno stato per ogni anno dal 2012 al 2017.
-In particolare ogni riga contiene:
+Il dataset CSV è un insieme di dati EUROSTAT riguardanti statistiche sulle percentuali di lettere consegnate in tempo (in base al tipo di spedizione) e suddivise per i vari paesi europei. Maggiori dettagli sulle modalità dell'indagine sono reperibili qui: https://publications.europa.eu/portal2012-portlet/html/downloadHandler.jsp?identifier=397a7a23-6d05-11e5-9317-01aa75ed71a1&format=pdf&language=en&productionSystem=cellar&part= .
+
+L'indagine è riferita al periodo 2012 - 2017. In particolare ogni riga del CSV contiene:
 * la frequenza di rilevazione del dato (indicata con "**freq**"), che per il dataset considerato è sempre annuale; 
-*  l'unità di misura (indicata con "**unit**") che anche in questo caso è sempre fissa ed è la percentuale;
+* l'unità di misura (indicata con "**unit**") che anche in questo caso è sempre fissa ed è la percentuale;
 * la nazione su cui è stata svolta l'indagine (indicata con "**geo**");
 * il codice  di spedizione (indicato con "**indic_PS**"), che rappresenta se le lettere sono state consegnate in 1,3 o 5 giorni lavorativi;
 * le percentuali di lettere consegnate in ogni anno dell'indagine.
-
-
 
 ## Modellazione
 Ogni riga del dataset CSV è rappresentata da una istanza della classe Delivery che contiene gli attributi elencati nel paragrafo precedente dove le percentuali di ogni anno sono raccolte nel vettore "*perTime_Period*", inoltre è stata creata una collezione di *Delivery* chiamata *Deliveries* che serve per gestire la lista degli oggetti.
@@ -42,6 +41,7 @@ chiamate. In particolare questa applicazione è stata testata attraverso chiamat
 I dati restituiti sono in formato "*JSON*" e rappresentano oggetti filtrati o l'intero dataset.
 
 È possibile  chiedere anche la restituzione delle statistiche di un particolare anno che riguarderanno la percentuale di lettere consegnate e su quanti oggetti è stata calcolata la statistica.
+
 # Path disponibili
 
 Attraverso una serie di chiamate *GET*  a rotte diverse è possibile ottenere risultati diversi, le richieste di filtraggio sono state implementate con chiamate *POST* per evitare query string troppo lunghe nell'*url*.
@@ -55,7 +55,7 @@ Restituisce in formato JSON l'elenco degli oggetti del dataset .
 
 * **/stats** 
 Restituisce in formato JSON le statistiche sull'intero dataset per tutti gli anni  .
-* **stats/{year}**
+* **/stats/{year}**
 Restituisce le statistiche sull'intero dataset del solo anno richiesto in formato JSON.
 
 Chiamate *POST*:
@@ -113,19 +113,19 @@ o infine
 ```
 Per scelta di sintassi gli tutti operatori vengono preceduti da "$". 
 * **operatorelogico** può corrispondere solo a "\$and" o "\$or" 
-*  **operatore**  può corrispondere solo ai seguenti valori:
-      * "$not" 
+* **operatore**  può corrispondere solo ai seguenti valori:
+      *  "$not" 
       *  "$in" 
-      * "$nin" 
-      * "$eq"
+      *  "$nin" 
+      *  "$eq"
       *  "$gt"
       *  "$gte"
       *  "$lt"
       *  "$lte"
       *  "$bt"
 * **field** è il campo che deve essere il filtrato, corrisponde quindi ad uno degli attributi di "*Delivery*".
-
 * **value** è il valore che viene comparato per eseguire il filtro.
+
 # Esempi di funzionamento
 Nel seguente paragrafo vengono mostrati esempi di chiamate ed i relativi risultati.
 1.  POST/list
@@ -245,7 +245,7 @@ In questa sezione verranno riportati i diagrammi UML dell'applicazione.
 
 * Diagramma delle sequenze per una richiesta di filtraggio dei dati
 
-![](SequenceGetListFiltered.png)
+![](SequenceGetListFiltered .png)
 
 * Diagramma delle sequenze per una richiesta di ottenere delle statistiche su una lista filtrata
 
