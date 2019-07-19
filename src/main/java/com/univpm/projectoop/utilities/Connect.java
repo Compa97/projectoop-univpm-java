@@ -12,36 +12,45 @@ import java.net.URLConnection;
 import java.io.BufferedReader;
 
 /**
- *
+ * Classe che effettua il download del JSON
  */
 public class Connect {
 
     /**
-     *
+     * Stringa contenente l'URL che restituisce il JSON del dataset di progetto
      */
     private final static String url = "http://data.europa.eu/euodp/data/api/3/action/package_show?id=TXJLP91qYJyBYbBF4uug";
 
     /**
-     *
+     * Contenuto del JSON
      */
     private String data;
 
+    /**
+     * Metodo che restituisce il contenuto del JSON
+     * @return JSON come Stringa
+     */
     public String getData() {
         return data;
     }
 
+    /**
+     * Metodo che restituisce l'URL
+     * @return Stringa URL
+     */
     public String getUrl() {
         return url;
     }
 
-    /*
+    /**
+     * Costruttore della classe che inizialliza la stringa in cui inserire il JSON
+     */
     public Connect() {
         data = "";
     }
-    */
 
     /**
-     *
+     * Metodo che effettua la connessione e la lettura del JSON
      */
     public void startConnect() {
 
@@ -63,8 +72,6 @@ public class Connect {
 
         } catch (IOException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "I/O Exception.");
-
-
         }
     }
 }

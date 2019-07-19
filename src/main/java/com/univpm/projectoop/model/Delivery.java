@@ -8,9 +8,9 @@ import java.util.regex.Pattern;
 import static com.univpm.projectoop.utilities.CSVParser.COMMA_DELIMITER;
 
 /**
- * DataSet EUROSTAT: percentage of letters delivered on-time
+ * DataSet EUROSTAT: percentage of letters delivered on-time.
  * Model class contenente le singole istanze: percentuale di lettere consegnate
- * per un determinato paese e tipo di spedizione negli anni considerati.
+ * per un determinato paese e tipo di spedizione negli anni considerati
  */
 public class Delivery {
 
@@ -51,11 +51,11 @@ public class Delivery {
      * Costruttore che inizializza l'oggetto ed effettua il parsing (a prescindere
      * dalla loro classificazione, i dati non disponibili e le eventuali annotazioni
      * su dati parziali non sono stati presi in considerazione).
-     * @param freq
-     * @param unit
-     * @param indic_PS
-     * @param geo
-     * @param TimePeriod
+     * @param freq Frequenza di campionamento
+     * @param unit Unità di misura (PC)
+     * @param indic_PS Codice spedizone
+     * @param geo Codice nazione
+     * @param TimePeriod Vettore contenente le percentuali di ogni anno
      */
     public Delivery(String freq, String unit, String indic_PS, String geo, String TimePeriod) {
         this.freq = freq;
@@ -113,7 +113,7 @@ public class Delivery {
 
     /**
      * Restituisce il valore percentuale corrispondente all'anno indicato
-     * @param year
+     * @param year Anno per cui si richiede il valore
      * @return Istanza float del vettore perTime_Period corrispondente all'anno richiesto
      */
     public Float getYearPerc(int year){
@@ -121,23 +121,37 @@ public class Delivery {
         return this.perTime_Period[year];
     }
 
-    /*
+    /**
+     * Metodo che restituisce la frequenza
+     * @return Frequenza (A)
+     */
     public String getFreq() {
         return freq;
     }
 
+    /**
+     * Metodo per modificare la frequenza
+     * @param freq Stringa frequenza
+     */
     public void setFreq(String freq) {
         this.freq = freq;
     }
 
+    /**
+     * Metodo che restituisce l'unità di misura
+     * @return Unità di misura (PC)
+     */
     public String getUnit() {
         return unit;
     }
 
+    /**
+     * Metodo per modificare l'unità di misura
+     * @param unit Stringa unità di misura
+     */
     public void setUnit(String unit) {
         this.unit = unit;
     }
-    */
 
     /**
      * Restituisce il codice di riferimento al gruppo di tipologie di spedizioni considerate
@@ -149,7 +163,7 @@ public class Delivery {
 
     /**
      * Permette di modificare il codice spedizione per l'oggetto istanziato
-     * @param indic_PS
+     * @param indic_PS Codice spedizione
      */
     public void setIndic_PS(String indic_PS) {
         this.indic_PS = indic_PS;
@@ -172,7 +186,7 @@ public class Delivery {
 
     /**
      * Restituisce il vettore contenente i dati percentuali per tutti gli anni considerati
-     * @return
+     * @return Vettore con percentuali anno per anno
      */
     public Float[] getPerTime_Period() {
         return perTime_Period;
@@ -180,7 +194,7 @@ public class Delivery {
 
     /**
      * Permette di modificare l'intero vettore con i dati percentuali degli anni considerati
-     * @param perTime_Period
+     * @param perTime_Period Vettore con percentuali anno per anno
      */
     public void setPerTime_Period(Float[] perTime_Period) {
         this.perTime_Period = perTime_Period;

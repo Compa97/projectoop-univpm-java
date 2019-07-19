@@ -4,25 +4,29 @@ import com.univpm.projectoop.model.Deliveries;
 import com.univpm.projectoop.utilities.CSVParser;
 import com.univpm.projectoop.utilities.Connect;
 import com.univpm.projectoop.utilities.JSONManager;
+import net.minidev.json.parser.ParseException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.io.IOException;
+
 /**
- *
+ * Applicazione SpringBoot (Entry point)
  */
 @SpringBootApplication
 public class Main {
 
 	/**
-	 *
+	 * Oggetto pubblico in cui viene salvata la lista dei dati parsati da CSV
 	 */
 	public static Deliveries deliveries;
 
 	/**
-	 *
-	 * @param args
+	 * Metodo main
+	 * @param args Eventuali args da cmd (non implementato)
+	 * @throws Exception Lanciato in caso di errori generici provenienti dai metodi utilizzati
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		try {
 			Connect connection = new Connect();
 			connection.startConnect();

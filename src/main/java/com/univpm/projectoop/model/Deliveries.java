@@ -25,7 +25,7 @@ public class Deliveries implements Filter<Delivery, Object> {
 
     /**
      * Costruttore che assegna la lista di tutti gli oggetti e quella da filtrare
-     * @param deliveriesList
+     * @param deliveriesList Lista contenente l'insieme di oggetti
      */
     public Deliveries(ArrayList<Delivery> deliveriesList) {
         super();
@@ -35,7 +35,7 @@ public class Deliveries implements Filter<Delivery, Object> {
 
     /**
      * Metodo che ritorna la lista di tutti gli oggetti
-     * @return
+     * @return Lista di oggetti
      */
     public ArrayList<Delivery> getDeliveriesList() {
         return deliveriesList;
@@ -43,7 +43,7 @@ public class Deliveries implements Filter<Delivery, Object> {
 
     /**
      * Metodo che permette di modificare la lista di tutti gli oggetti
-     * @param deliveriesList
+     * @param deliveriesList Lista di oggetti
      */
     public void setDeliveriesList(ArrayList<Delivery> deliveriesList) {
         this.deliveriesList = deliveriesList;
@@ -51,7 +51,7 @@ public class Deliveries implements Filter<Delivery, Object> {
 
     /**
      * Metodo per il calcolo della media della percentuale in un determinato anno
-     * @param year
+     * @param year Anno per il quale è richiesta la media
      * @return La media con virgola della percentuale di lettere consegnate nell'anno considerato
      */
     public float getMeanOfYear(int year) {
@@ -69,9 +69,9 @@ public class Deliveries implements Filter<Delivery, Object> {
     }
 
     /**
-     *
-     * @param year
-     * @return
+     * Metodo per ottenere la deviazione standard
+     * @param year Anno per il quale è richiesta la deviazione standard
+     * @return Deviazione standard
      */
     public float devStd (int year) {
         int counter = 0;
@@ -90,9 +90,9 @@ public class Deliveries implements Filter<Delivery, Object> {
     }
 
     /**
-     *
-     * @param year
-     * @return
+     * Metodo per ottenere il valore massimo dell'anno
+     * @param year Anno richiesto per la statistica
+     * @return Valore massimo dell'anno
      */
     public float maxOfaYear(int year){
         int i = 0;
@@ -111,9 +111,9 @@ public class Deliveries implements Filter<Delivery, Object> {
     }
 
     /**
-     *
-     * @param year
-     * @return
+     * Metodo per ottenere il valore minimo dell'anno
+     * @param year Anno richiesto per la statistica
+     * @return Valore minimo dell'anno
      */
     public float minOfaYear(int year){
         int i = 0;
@@ -132,9 +132,9 @@ public class Deliveries implements Filter<Delivery, Object> {
     }
 
     /**
-     *
-     * @param objs
-     * @return
+     * Metodo per effettuare l'AND tra due liste
+     * @param objs Lista di liste che contiene le sottoliste su cui effetuare l'operazione
+     * @return Lista risultante dall'operazione AND
      */
     public ArrayList<Delivery> and (ArrayList<ArrayList<Delivery>> objs) {
         ArrayList<Delivery> list = new ArrayList<>();
@@ -155,9 +155,9 @@ public class Deliveries implements Filter<Delivery, Object> {
     }
 
     /**
-     *
-     * @param objs
-     * @return
+     * Metodo per effettuare l'AND tra due liste
+     * @param objs Lista di liste che contiene le sottoliste su cui effetuare l'operazione
+     * @return Lista risultante dall'operazione OR
      */
     public ArrayList<Delivery> or (ArrayList<ArrayList<Delivery>> objs) {
         Set<Delivery> s = new HashSet<>();
@@ -167,15 +167,15 @@ public class Deliveries implements Filter<Delivery, Object> {
     }
 
     /**
-     *
-     * @param fieldName
-     * @param operator
-     * @param value
+     * Implementazione dell'interfaccia per ritornare la lista filtrata
+     * @param fieldName Campo su cui filtrare
+     * @param operator Operatore di filtraggio
+     * @param value Valore di confronto
      * @return Ritorna la lista generata dal metodo select della classe FilterUtils
      * @throws NoSuchMethodException Lanciato quando un metodo non viene trovato
      * @throws IllegalAccessException Lanciato quando un'applicazione non ha accesso alla
      * definizione di una classe, un campo, un metodo o un costruttore
-     * @throws InvocationTargetException
+     * @throws InvocationTargetException Lanciato se un metodo chiamato contiene a sua volta un'eccezione
      */
     @Override
     public ArrayList<Delivery> filterField(String fieldName, String operator, Object... value) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {

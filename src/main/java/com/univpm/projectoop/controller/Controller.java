@@ -154,7 +154,7 @@ public class Controller {
      * definizione di una classe, un campo, un metodo o un costruttore
      * @throws InvocationTargetException Lanciato se un metodo chiamato contiene a sua volta un'eccezione
      */
-    @RequestMapping(value = {"/stats", "/stats/{year}", "/stats/{year}/{listConnector}"}, method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = {"/stats", "/stats/year/{year}", "/stats/listConnector/{listConnector}", "/stats/year/{year}/listConnector/{listConnector}"}, method = RequestMethod.POST, produces = "application/json")
     public String getStat(@PathVariable Optional <String> year, @PathVariable Optional<String> listConnector, @RequestBody(required = false) String filter) throws JSONException, IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 
         out = null;
@@ -175,6 +175,9 @@ public class Controller {
                     // 2) FILTER NOT NULL - YEAR NULL
                     map = new ObjectMapper();
                     Deliveries d = new Deliveries(out);
+                    if (d.getDeliveriesList().isEmpty()){
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "There is no result for your filtering query!");
+                    }
                     for (int i = 2012; i <= 2017; i++) {
                         allStat.add(new Stats(i, d));
                     }
@@ -317,6 +320,9 @@ public class Controller {
                     map = new ObjectMapper();
                     Stats statistic;
                     if (out != null) {
+                        if (out.isEmpty()){
+                            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "There is no result for your filtering query!");
+                        }
                         statistic = new Stats(yearP, new Deliveries(out));
                         map.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
                         return map.writeValueAsString(statistic);

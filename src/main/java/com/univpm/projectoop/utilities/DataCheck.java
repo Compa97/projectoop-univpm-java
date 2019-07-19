@@ -8,29 +8,29 @@ import java.util.regex.Pattern;
 import static java.lang.Float.parseFloat;
 
 /**
- *
+ * Classe che implementa metodi ausiliari per il filtraggio
  */
 public class DataCheck {
 
     /**
-     *
+     * Contiene l'anno se è utilizzato come campo
      */
     private int yearCondition;
 
     /**
-     *
+     * Vettore con i valori da confrontare se numerici
      */
     private Float [] valueFloat;
 
     /**
-     *
+     * Vettore con i valori da confrontare se stringhe
      */
     private String [] valueString;
 
     /**
-     *
-     * @param fieldName
-     * @return
+     * Metodo che restituisce l'eventuale presenza di un anno come campo (vero/falso)
+     * @param fieldName Nome del campo
+     * @return true: il campo è un anno, false: il campo non è un anno
      */
     public boolean isYear (String fieldName){
 
@@ -46,9 +46,9 @@ public class DataCheck {
     }
 
     /**
-     *
-     * @param strValue
-     * @return
+     * Controlla se i valori da confrontare sono inseriti in un vettore e di che tipo sono
+     * @param strValue Valore di confronto nel filtro
+     * @return true: dati numerici (vettoriali o singoli), false: dati stringhe (vettoriali o singoli)
      */
     public boolean isArray (String strValue) {
 
@@ -99,24 +99,24 @@ public class DataCheck {
     }
 
     /**
-     *
-     * @return
+     * Metodo che restituisce l'anno per il campo (se presente)
+     * @return Anno come intero
      */
     public int getYearCondition() {
         return yearCondition;
     }
 
     /**
-     *
-     * @return
+     * Restituisce il vettore di valori da confrontare se numerici
+     * @return Vettore di float
      */
     public Float[] getValueFloat() {
         return valueFloat;
     }
 
     /**
-     *
-     * @return
+     * Restituisce il vettore di valori da confrontare se stringhe
+     * @return Vettore di stringhe
      */
     public String[] getValueString() {
         return valueString;

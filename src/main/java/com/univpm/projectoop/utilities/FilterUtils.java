@@ -9,17 +9,17 @@ import java.util.Arrays;
 import java.util.Collection;
 
 /**
- *
- * @param <T>
+ * Classe che implementa i metodi per l'interpretazione del filtro
+ * @param <T> Oggetto generico con cui può lavorare la classe
  */
 public class FilterUtils<T> {
 
     /**
-     *
-     * @param value
-     * @param operator
-     * @param obj
-     * @return
+     * Metodo che effettua le operazioni in base al tipo di dato e all'operatore
+     * @param value Valore del campo
+     * @param operator Operatore condizionale o logico
+     * @param obj Vettore di valori di confronto
+     * @return true: la condizione del filtro è soddisfatta, false: non soddisfatta
      */
     private static boolean check(Object value, String operator, Object... obj) {
 
@@ -84,15 +84,17 @@ public class FilterUtils<T> {
     }
 
     /**
-     *
-     * @param src
-     * @param fieldName
-     * @param operator
-     * @param value
-     * @return
-     * @throws NoSuchMethodException
-     * @throws InvocationTargetException
-     * @throws IllegalAccessException
+     * Metodo che seleziona il metodo da richiamare per scegliere le istanze da aggiungere
+     * in lista con l'uso di metodi ausiliari (check e classe DataCheck)
+     * @param src Lista contenente gli oggetti
+     * @param fieldName Nome del campo
+     * @param operator Operatore
+     * @param value Valori di confronto
+     * @return Lista filtrata
+     * @throws NoSuchMethodException Lanciato quando un metodo non viene trovato
+     * @throws IllegalAccessException Lanciato quando un'applicazione non ha accesso alla
+     * definizione di una classe, un campo, un metodo o un costruttore
+     * @throws InvocationTargetException Lanciato se un metodo chiamato contiene a sua volta un'eccezione
      */
     public Collection<Delivery> select(Collection<Delivery> src, String fieldName, String operator, Object... value) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Collection<Delivery> out = new ArrayList<>();
