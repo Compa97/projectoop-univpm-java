@@ -52,7 +52,7 @@ public class Controller {
     private ArrayList<Delivery> out = null;
 
     /**
-     * Oggetto che trasforma la lista in JSOM
+     * Oggetto che trasforma la lista in JSON
      */
     private ObjectMapper map;
 
