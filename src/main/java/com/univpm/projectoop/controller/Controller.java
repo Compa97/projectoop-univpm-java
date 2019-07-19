@@ -62,7 +62,7 @@ public class Controller {
      * @throws JsonProcessingException Lanciato se ci sono errori nel parsing o nella generazione del JSON
      */
     @RequestMapping(value = "/meta", method = RequestMethod.GET, produces = "application/json")
-    String getMetadata() throws JsonProcessingException {
+    public String getMetadata() throws JsonProcessingException {
 
         ObjectMapper map = new ObjectMapper();
         JsonSchemaGenerator schemaGenerator = new JsonSchemaGenerator(map);
@@ -76,7 +76,7 @@ public class Controller {
      * @throws JsonProcessingException Lanciato se ci sono errori nel parsing o nella generazione del JSON
      */
     @RequestMapping(value = "/list", method = RequestMethod.GET, produces = "application/json")
-    String getList() throws JsonProcessingException {
+    public String getList() throws JsonProcessingException {
 
         ObjectMapper map = new ObjectMapper();
         return map.writeValueAsString(deliveries.getDeliveriesList());
@@ -95,7 +95,7 @@ public class Controller {
      * @throws InvocationTargetException Lanciato se un metodo chiamato contiene a sua volta un'eccezione
      */
     @RequestMapping(value = {"/list", "/list/{listConnector}"}, method = RequestMethod.POST, produces = "application/json")
-    String getList(@PathVariable Optional<String> listConnector, @RequestBody(required = false) String filter) throws IOException, JSONException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    public String getList(@PathVariable Optional<String> listConnector, @RequestBody(required = false) String filter) throws IOException, JSONException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 
         ArrayList<Delivery> filtered = null;
         ObjectMapper map = new ObjectMapper();

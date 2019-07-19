@@ -1,5 +1,4 @@
 package com.univpm.projectoop.utilities;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.file.FileAlreadyExistsException;
@@ -9,7 +8,6 @@ import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import net.minidev.json.JSONValue;
 import net.minidev.json.parser.ParseException;
-import org.springframework.boot.json.JsonParseException;
 
 /**
  * Classe che gestisce il parsing del JSON
