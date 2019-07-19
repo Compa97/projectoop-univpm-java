@@ -129,6 +129,7 @@ Per scelta di sintassi gli tutti operatori vengono preceduti da "$".
 # Esempi di funzionamento
 Nel seguente paragrafo vengono mostrati esempi di chiamate ed i relativi risultati.
 1.  POST/list
+
 body:
  ```
 {
@@ -160,6 +161,7 @@ La risposta in formato JSON è :
     }
 ```
 2. POST/list/and
+
 body:
 ```
 {
@@ -211,6 +213,7 @@ La risposta in formato JSON è :
 ]
 ```
 3. POST/stats/2012
+
 body: 
 ```
 {"indic_PS":{"$eq" : "QOS801"}}
@@ -232,13 +235,22 @@ In questa sezione verranno riportati i diagrammi UML dell'applicazione.
 
 ## UseCase Diagram
 
+![](UseCaseDiagram.png)
+
 ## Activity Diagram
+
+![](ActivityDiagram.png)
 
 ## Sequence Diagram
 
 * Diagramma delle sequenze per una richiesta di filtraggio dei dati
 
+![](SequenceGetListFiltered.png)
 
 * Diagramma delle sequenze per una richiesta di ottenere delle statistiche su una lista filtrata
 
+![](SequenceGetFilteredStats.png)
+
 ## Class Diagram
+
+![](ClassDiagram.png)
